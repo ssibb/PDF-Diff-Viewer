@@ -103,9 +103,9 @@ I'm not aware of any other open source solution for PDF comparison. Anyway, ther
 
 
 
-* [https://draftable.com/compare](Draftable) has a nice free web-based comparison tool, as well as paid desktop software (I tried the free web-based, and it's pretty good, but might not be well suited for sensible documents you wouldn't like to upload)
-* [https://www.textcompare.org/pdf/](⦁	https://www.textcompare.org/pdf/) another web-based solution that seems to process the comparison directly in browser (i.e.: no upload of the documents). Local processing is a plus, but results to me don't look as good as with Draftable.
-* [https://www.pdf-xchange.com/knowledgebase/324-How-do-I-compare-documents-in-PDF-XChange-Editor](⦁	https://www.pdf-xchange.com/knowledgebase/324-How-do-I-compare-documents-in-PDF-XChange-Editor) PDF-Xchange-Editor (which is mostly a PDF editor) has recently introduced this feature. 
+* [https://draftable.com/compare] has a nice free web-based comparison tool, as well as paid desktop software (I tried the free web-based, and it's pretty good, but might not be well suited for sensible documents you wouldn't like to upload)
+* [https://www.textcompare.org/pdf/] another web-based solution that seems to process the comparison directly in browser (i.e.: no upload of the documents). Local processing is a plus, but results to me don't look as good as with Draftable.
+* [https://www.pdf-xchange.com/knowledgebase/324-How-do-I-compare-documents-in-PDF-XChange-Editor] PDF-Xchange-Editor (which is mostly a PDF editor) has recently introduced this feature. 
 
 
 
