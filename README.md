@@ -2,6 +2,7 @@
 
 PDF Diff Viewer, a side-by-side, visual highlight, sync-scroll, PDF comparer, written in Python. Open source, mostly powered by PyMuPDF and Tkinter. Optional support for git diff, for a better comparison algorithm.
 
+![screenshot](/screenshot.gif)
 
 #### Install
 
@@ -124,5 +125,5 @@ At work, I have access to Copilot (which should be based on ChatGPT) and I can s
 
 
 
-![screenshot](/screenshot.gif)
+
 
