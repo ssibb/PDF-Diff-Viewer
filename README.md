@@ -4,6 +4,7 @@ PDF Diff Viewer, a side-by-side, visual highlight, sync-scroll, PDF comparer, wr
 ![screenshot](/screenshot.gif)
 
 
+
 #### Install
 
 
