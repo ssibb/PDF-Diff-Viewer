@@ -6,21 +6,23 @@ PDF Diff Viewer, a side-by-side, visual highlight, sync-scroll, PDF comparer, wr
 
 #### Install
 
+Windows binaries are provided; while no installation is needed, you need to decompress everything and then run "pdf_viewer_app.exe" within the folder "pdf_viewer_app". However, if you prefer running directly the script, first you need to install the libraries as follows:
 
 
-First, run:
+```bash
+pip install pymupdf Pillow klembord tkinterdnd2 pywin32 pyautogui*
+```
 
 
+Then, just download the script and run on Python. 
 
-*pip install pymupdf Pillow klembord tkinterdnd2 pywin32 pyautogui*
+```bash
+python pdf_viewer_app.py
+```
 
+Tested on Python 3.12 on Windows. Should work, on Linux and Mac as well, though untested till now; possibly with small changes.
 
-
-Then, just download the script and run on Python. Tested on Python 3.12 on Windows. Should work, on Linux and Mac as well, though untested till now; possibly with small changes.
-
-
-
-For better comparison uses git diff when available. If git diff command is not available, uses Python built-in difflib.
+For better comparison uses git diff when available; the binary release for Windows already includes the git diff binaries (taken from git-for-windows, the PortableGit release. If git diff command is not available, uses Python built-in difflib. (Still unsure if this works also with a generic git diff installation; I think colors of moves can be customized in git diff; if so, it will probably broke the moves logic within the script).
 
 
 
