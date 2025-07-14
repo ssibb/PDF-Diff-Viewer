@@ -6,11 +6,13 @@ PDF Diff Viewer, a side-by-side, visual highlight, sync-scroll, PDF comparer, wr
 
 #### Install
 
-Windows binaries are provided; while no installation is needed, you need to decompress everything and then run "pdf_viewer_app.exe" within the folder "pdf_viewer_app". However, if you prefer running directly the script, first you need to install the libraries as follows:
+Windows binaries are provided; while no installation is needed, you need to decompress everything and then run "pdf_viewer_app.exe" within the folder "pdf_viewer_app". Make sure you have writing permission for the folder where you place the app, since some features require the usage of temporary files (git diff; comparison of Word files or from the clipboard).
+
+However, if you prefer running directly the script, first you need to install the libraries as follows:
 
 
 ```bash
-pip install pymupdf Pillow klembord tkinterdnd2 pywin32 pyautogui*
+pip install pymupdf Pillow klembord tkinterdnd2 pywin32 pyautogui
 ```
 
 
