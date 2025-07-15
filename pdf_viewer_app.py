@@ -378,8 +378,8 @@ def helper_case_quotes(words_data1, words_data2, case_insensitive, ignore_quotes
 		a_compare = [word.lower() for word in a_compare]
 		b_compare = [word.lower() for word in b_compare]
 	if ignore_quotes:
-		a_compare = [word.replace("‘", "'").replace("’", "'").replace("ʼ", "'").replace('“', '"').replace('”', '"') for word in a_compare]
-		b_compare = [word.replace("‘", "'").replace("’", "'").replace("ʼ", "'").replace('“', '"').replace('”', '"') for word in b_compare]
+		a_compare = [word.replace("â€˜", "'").replace("â€™", "'").replace("Ê¼", "'").replace('â€œ', '"').replace('â€', '"') for word in a_compare]
+		b_compare = [word.replace("â€˜", "'").replace("â€™", "'").replace("Ê¼", "'").replace('â€œ', '"').replace('â€', '"') for word in b_compare]
 	return a_compare,b_compare
 
 def align_words_with_difflib(words_data1, words_data2, case_insensitive, ignore_quotes):#difflib (standard, uses Ratcliff-Obershelp algorithm)
@@ -588,6 +588,13 @@ class GitSequenceMatcher:
 			#print("--- End Stderr ---")
 
 			diff_output = process.stdout
+
+
+			if process.returncode == 0 and not diff_output.strip():# in case the two files are equal and therefore git diff returns 0 and empty stdout
+				with open(self.temp_file_a, 'r', encoding='utf-8', errors='replace') as f:
+					num_lines = sum(1 for _ in f)
+				return [('equal', 0, num_lines, 0, num_lines, False)]
+
 
 			COLOR_RED_FG = r'\x1b\[31m'# deletions
 			COLOR_GREEN_FG = r'\x1b\[32m'# insertions
@@ -882,7 +889,7 @@ else:
 
 class PDFViewerPane:
 	PAGE_PADDING = 10 
-	BUFFER_PAGES = 1  
+	BUFFER_PAGES = 3  
 	def __init__(self, master, parent_app, pane_id):
 		self.sorted=None
 		self.master = master
@@ -982,8 +989,9 @@ class PDFViewerPane:
 	def _on_pan_move(self, event):#with timer continuosly postponed
 		"""Drags the canvas view, as the mouse moves and without click, if pan mode is active."""
 		if self._pan_mode_active:
+			#print("event: ",event.x, event.y, "self._cursor_start_pos.x: ",self._cursor_start_pos.x,self.canvas.winfo_rootx())
 			#self.canvas.scan_dragto(event.x, event.y, gain=1)
-			self.canvas.scan_dragto(0, event.y, gain=3)
+			self.canvas.scan_dragto(self._cursor_start_pos.x- self.canvas.winfo_rootx(), event.y, gain=3)#instead ov event.x we stick to original x (where the user double clicked)
 			self.schedule_render_visible_pages() 
 			if self.ignore_scroll_events_counter == 0:
 				self.canvas.event_generate("<<UserCanvasScrolled>>")
@@ -1005,23 +1013,6 @@ class PDFViewerPane:
 
 		# Schedule the next snap-back
 		self._after_id = self.master.after(400, self._snap_back_timer)
-	def on_right_clickOLD(self, event):
-		"""Displays a context menu on right-click."""
-		self.context_menu.delete(0, tk.END) 
-		if self.pdf_document and not self.pdf_document.is_closed:
-			self.context_menu.add_command(
-				label="Save PDF with Annotations...",
-				command=self.save_pdf_with_annotations
-			)
-			self.context_menu.add_separator() 
-		self.context_menu.add_command(
-			label="Paste from Clipboard",
-			command=self.paste_from_clipboard_action
-		)
-		try:
-			self.context_menu.tk_popup(event.x_root, event.y_root)
-		finally:
-			self.context_menu.grab_release()
 	def on_right_click(self, event):
 		"""Displays a context menu on right-click."""
 		self.context_menu.delete(0, tk.END) 
@@ -1558,6 +1549,14 @@ class PDFViewerApp:
 		self.master.after_idle(self.update_ui_state)
 		self.master.after_idle(lambda: self.pane1.canvas.focus_set())
 		self._process_command_line_args()
+		#variable used in the sync_scroll()
+		self.scroll_time=0
+		self.scroll_y=0
+		self.scroll_pane=None
+		self.scroll_height=0
+		self.scroll_target_y=0
+		self.scroll_distance=0
+
 	def setup_ui(self):
 		"""Sets up the main application UI, including control frame and viewer panes."""
 		control_frame = ttk.Frame(self.master, padding="10")
@@ -1780,6 +1779,19 @@ class PDFViewerApp:
 			return
 		source_x, source_y = source_pane.get_current_view_coords()
 		source_canvas_height = source_pane.canvas.winfo_height()
+		
+		# read previous scroll
+		prev_scroll_time=self.scroll_time
+		prev_scroll_y=self.scroll_y
+		prev_scroll_pane=self.scroll_pane
+		prev_scroll_height=self.scroll_height
+		#set for next one
+		time_scroll=time.time()
+		self.scroll_time=time_scroll
+		self.scroll_y=source_y
+		self.scroll_pane=source_pane
+		self.scroll_height=source_canvas_height
+		
 		if source_canvas_height == 0:
 			return
 		first_common_word_in_view = None
@@ -1803,6 +1815,8 @@ class PDFViewerApp:
 				if word_info_target["unique_id"] == common_word_id:
 					target_word_info = word_info_target
 					break
+			#print(f"\nscroll direction: {source_y-prev_scroll_y}")# positive=we are scrolling down
+			#print("source y: ",source_y)
 			#print(f"source: {first_common_word_in_view["text"]}, {first_common_word_in_view["page_num"]}, {first_common_word_in_view["x0"]}, {first_common_word_in_view["y0"]},\ntarget: {target_word_info["text"]}, {target_word_info["page_num"]}, {target_word_info["x0"]}, {target_word_info["y0"]}")
 			if target_word_info:
 				target_page_num = target_word_info["page_num"]
@@ -1813,9 +1827,21 @@ class PDFViewerApp:
 				y_offset_in_source_view = source_word_y_content_coord_exact - source_y
 				target_word_y_content_coord = (target_page_info["y_start_offset"] + target_word_y0_doc) * target_pane.zoom_level
 				target_y_scroll_pixels = target_word_y_content_coord - y_offset_in_source_view
-				source_x_prop = source_pane.canvas.xview()[0]
-				target_x_scroll_pixels = source_x_prop * target_pane.max_document_width * target_pane.zoom_level
-				target_pane._apply_scroll(target_x_scroll_pixels, target_y_scroll_pixels)
+				prev_distance=self.scroll_distance
+				distance=target_word_y_content_coord-source_y
+				prev_target_y=self.scroll_target_y
+				is_target_word_visible= (target_word_y_content_coord>target_pane.get_current_view_coords()[1]  and target_word_y_content_coord<target_pane.get_current_view_coords()[1]+target_pane.canvas.winfo_height())
+				#print("target_y_scroll_delta: ",target_y_scroll_pixels-prev_target_y)
+				#print("target y", target_y_scroll_pixels)
+				#print("same direction? ", (source_y-prev_scroll_y)*(target_y_scroll_pixels-prev_target_y)>0)
+				#print("is_target_word_visible?",is_target_word_visible)
+				if (source_y-prev_scroll_y)*(target_y_scroll_pixels-prev_target_y)>0 or  not is_target_word_visible:
+					#print("scrolled!")
+					self.scroll_distance=distance
+					self.scroll_target_y=target_y_scroll_pixels
+					source_x_prop = source_pane.canvas.xview()[0]
+					target_x_scroll_pixels = source_x_prop * target_pane.max_document_width * target_pane.zoom_level
+					target_pane._apply_scroll(target_x_scroll_pixels, target_y_scroll_pixels)
 		#else:
 		elif 0:#don't scroll target pane if no common words are found in the source pane
 			source_x_prop, source_y_prop = source_pane.canvas.xview()[0], source_pane.canvas.yview()[0]
