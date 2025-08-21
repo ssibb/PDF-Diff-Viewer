@@ -99,7 +99,7 @@ Given this script only compares the text within the PDFs, files have to contain 
 
 
 
-I'm not aware of any other open source solution for PDF comparison. Anyway, there are other solutions:
+I'm not aware of any other open source solution for side-by-side, sync-scroll PDF comparison. Anyway, there are other solutions:
 
 
 
