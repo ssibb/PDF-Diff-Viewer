@@ -308,6 +308,7 @@ def extract_words_with_styles(pdf_document):
 	LINE_TOLERANCE_Y = 3# works well with small font; might be improved scaling tolerance with the font size
 
 	for page_num, page in enumerate(pdf_document):
+		page.remove_rotation()
 		if app.ignore_ligatures.get():
 			words_data = page.get_text("words", flags=0)
 		else:
@@ -2004,4 +2005,5 @@ if __name__ == "__main__":
 	root = TkinterDnD.Tk()
 	app = PDFViewerApp(root)
 	root.protocol("WM_DELETE_WINDOW", app.on_closing)
+
 	root.mainloop()
