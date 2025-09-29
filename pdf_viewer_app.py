@@ -1,34 +1,34 @@
 # -*- coding: UTF-8 -*-
-import inspect
-import time
-from ctypes import windll, wintypes
-import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
-from PIL import Image, ImageTk
-import os
-import re
-from collections import defaultdict
 import difflib
-from idlelib.tooltip import Hovertip
-import threading 
-import sys 
-import pathlib 
-from tkinterdnd2 import DND_FILES, TkinterDnD 
-import fitz 
-import klembord 
+import inspect
+import os
+import pathlib
+import re
 import subprocess
-import copy
+import sys
 import tempfile
+import threading
+import time
+import tkinter as tk
 import traceback
+from collections import defaultdict
+from idlelib.tooltip import Hovertip
+from tkinter import ttk, filedialog, messagebox
 
+import fitz
+import klembord
+from PIL import Image, ImageTk
+from tkinterdnd2 import DND_FILES, TkinterDnD
 
 try:
 	import win32com.client
 	import pythoncom
+	from ctypes import windll, wintypes
 	on_windows=1
 except:
+	windll = None
+	wintypes = None
 	on_windows=0
-	
 
 try:
 	import pyautogui
@@ -561,6 +561,8 @@ class GitSequenceMatcher:
 				'git',
 				'--no-pager',
 				'diff',
+				'--no-index',
+				'--no-ext-diff',
 				#'--diff-algorithm=myers',
 				#'--diff-algorithm=minimal',
 				#'--diff-algorithm=patience',
@@ -580,13 +582,13 @@ class GitSequenceMatcher:
 				errors='replace'
 			)
 
-			#print(f"Git diff return code: {process.returncode}")
-			#print("--- Raw Git Diff Output (repr) ---")
-			#print(repr(process.stdout))
-			#print("--- End Raw Git Diff Output ---")
-			#print("Stderr from git (if any):")
-			#print(process.stderr)
-			#print("--- End Stderr ---")
+			# print(f"Git diff return code: {process.returncode}")
+			# print("--- Raw Git Diff Output (repr) ---")
+			# print(repr(process.stdout))
+			# print("--- End Raw Git Diff Output ---")
+			# print("Stderr from git (if any):")
+			# print(process.stderr)
+			# print("--- End Stderr ---")
 
 			diff_output = process.stdout
 
@@ -2001,6 +2003,8 @@ class PDFViewerApp:
 		self.pane1.close_pdf() 
 		self.pane2.close_pdf() 
 		self.master.destroy() 
+
+
 if __name__ == "__main__":
 	root = TkinterDnD.Tk()
 	app = PDFViewerApp(root)
