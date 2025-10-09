@@ -22,7 +22,7 @@ Then, just download the script and run on Python.
 python pdf_viewer_app.py
 ```
 
-Tested on Python 3.12 on Windows. Should work, on Linux and Mac as well, though untested till now; possibly with small changes.
+Tested on Python 3.12 on Windows. Thanks to mikhai15555 for testing and updating code for Mac. Should work on Linux as well, though untested till now; possibly with small changes.
 
 For better comparison uses git diff when available; the binary release for Windows already includes the git diff binaries (taken from git-for-windows, the PortableGit release. If git diff command is not available, uses Python built-in difflib. (Still unsure if this works also with a generic git diff installation; I think colors of moves can be customized in git diff; if so, it will probably broke the moves logic within the script).
 
