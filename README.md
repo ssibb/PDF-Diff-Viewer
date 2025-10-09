@@ -4,7 +4,7 @@ PDF Diff Viewer, a side-by-side, visual highlight, sync-scroll, PDF comparer, wr
 
 ![screenshot](/screenshot.gif)
 
-#### Install
+#### Install & Run
 
 Windows binaries are provided; while no installation is needed, you need to decompress everything and then run "pdf_viewer_app.exe" within the folder "pdf_viewer_app". Make sure you have writing permission for the folder where you place the app, since some features require the usage of temporary files (git diff; comparison of Word files or from the clipboard).
 
