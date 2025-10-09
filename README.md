@@ -22,15 +22,38 @@ Then, just download the script and run on Python.
 python pdf_viewer_app.py
 ```
 
-Tested on Python 3.12 on Windows. Thanks to mikhai15555 for testing and updating code for Mac. Should work on Linux as well, though untested till now; possibly with small changes.
+Tested on Python 3.12 on Windows. Should work on Linux as well, though untested till now; possibly with small changes.
 
 For better comparison uses git diff when available; the binary release for Windows already includes the git diff binaries (taken from git-for-windows, the PortableGit release. If git diff command is not available, uses Python built-in difflib. (Still unsure if this works also with a generic git diff installation; I think colors of moves can be customized in git diff; if so, it will probably broke the moves logic within the script).
 
+##### Mac
 
+For Mac some extra steps might be necessary to get 'tcl-tk' working properly
+```bash
+brew install tcl-tk@8
+export TCL_LIBRARY=$(brew --prefix tcl-tk@8)/lib/tcl8.6
+export TK_LIBRARY=$(brew --prefix tcl-tk@8)/lib/tk8.6
+```
 
+If you get the error `_tkinter.TclError: Can't find a usable init.tcl in the following directories:`, make sure to re-run the exports above.
 
+If you get errors like the following:
+```terminaloutput
+/opt/homebrew/opt/tcl-tk/lib/tk8.6/tk.tcl: version conflict for package "Tk": have 8.6.12, need exactly 8.6.17
+version conflict for package "Tk": have 8.6.12, need exactly 8.6.17
+```
 
+You might need to run the following commands:
+```bash
+sed -i '' 's/package require -exact Tcl 8\.6\.17/package require -exact Tcl 8.6.12/' $(brew --prefix tcl-tk@8)/lib/tcl8.6/init.tcl
+sed -i '' 's/package require -exact Tk  8\.6\.17/package require -exact  Tk 8.6.12/' $(brew --prefix tcl-tk@8)/lib/tk8.6/tk.tcl
+```
 
+After fixing any Tcl/Tk issues, you can run the project using [uv](https://docs.astral.sh/uv/)
+```bash
+uv sync
+uv run pdf_viewer_app.py
+```
 
 #### Features
 
