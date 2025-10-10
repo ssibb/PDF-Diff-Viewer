@@ -83,7 +83,7 @@ and you compare to this one:
 
 
 
-This is done on purpose: imagine a word that, between the two versions, changes its location because it goes to the next line, and here you want to see it as unchanged. Therefore, its a feature, not a bug. Changes in the font (color, formatting, etc.) is ignored in the same way. In other words, changes everything else that is not text (say, images, shapes, etc.) are ignored.
+This is done on purpose: imagine a word that, between the two versions, changes its location because it goes to the next line, and here you want to see it as unchanged. Therefore, it's a feature, not a bug. Changes in the font (color, formatting, etc.) is ignored in the same way. In other words, changes everything else that is not text (say, images, shapes, etc.) are ignored.
 
 Anyway, you should be aware of this behaviour, because it might not always be what you expect.
 
