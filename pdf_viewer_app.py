@@ -379,8 +379,8 @@ def helper_case_quotes(words_data1, words_data2, case_insensitive, ignore_quotes
 		a_compare = [word.lower() for word in a_compare]
 		b_compare = [word.lower() for word in b_compare]
 	if ignore_quotes:
-		a_compare = [word.replace("â€˜", "'").replace("â€™", "'").replace("Ê¼", "'").replace('â€œ', '"').replace('â€', '"') for word in a_compare]
-		b_compare = [word.replace("â€˜", "'").replace("â€™", "'").replace("Ê¼", "'").replace('â€œ', '"').replace('â€', '"') for word in b_compare]
+		a_compare = [word.replace("‘", "'").replace("’", "'").replace("ʼ", "'").replace('“', '"').replace('”', '"') for word in a_compare]
+		b_compare = [word.replace("‘", "'").replace("’", "'").replace("ʼ", "'").replace('“', '"').replace('”', '"') for word in b_compare]
 	return a_compare,b_compare
 
 def align_words_with_difflib(words_data1, words_data2, case_insensitive, ignore_quotes):#difflib (standard, uses Ratcliff-Obershelp algorithm)
@@ -2011,3 +2011,4 @@ if __name__ == "__main__":
 	root.protocol("WM_DELETE_WINDOW", app.on_closing)
 
 	root.mainloop()
+
